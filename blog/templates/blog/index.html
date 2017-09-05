@@ -1,0 +1,97 @@
+{% extends 'blog/base.html' %}
+{% block content %}
+    <div class="row">
+        <div class="col-md-8 col-md-offset-2">
+            <h2>{{ Title }}</h2><br>
+        </div>
+    </div>
+    {% if all_data %}
+    {% for search in all_data %}
+
+        <div class="row pane">
+
+        <div class="col-md-8 col-md-offset-2">
+            {% if messages %}
+            {% for message in messages %}
+            <div class="alert alert-success">
+                {{ message }}
+            </div>
+            {% endfor %}
+            {% endif %}
+             <div class="panel-group">
+                 <div class="panel panel-primary">
+                      <div class="panel-heading">{{ search.title }}</div>
+                      <div class="panel-body">{{ search.disc|slice:":200" }}</div>
+                      &nbsp;<a href="{% url 'blog:detail' search.id %}" class="btn btn-primary">Detail</a><br><br>
+                 </div>
+              </div>
+        </div>
+     </div>
+    {% endfor %}
+    {% else %}
+    {% for list in data %}
+
+     <div class="row pane">
+
+        <div class="col-md-8 col-md-offset-2">
+             <div class="panel-group">
+                 <div class="panel panel-primary">
+                      <div class="panel-heading">{{ list.title }}</div>
+                      <div class="panel-body">
+                           <div class="col-sm-2">
+                               {% if list.img %}
+                     <img src="{{ list.img.url }}" alt="" width="100" height="100">
+                     {% endif %}
+                           </div>
+                          <div class="col-sm-10">
+                              {{ list.disc|slice:":200" }}
+                          </div>
+
+                      </div>
+                      &nbsp;<a href="{% url 'blog:detail' list.id %}" class="btn btn-primary">Detail</a>
+                      &nbsp;&nbsp;<a href="{% url 'blog:article-update' list.id %}" class="btn btn-success">Update</a>
+                     <br><br>
+                    <form action="{% url 'blog:article-delete' list.id %}" onsubmit="return confirm('Do you really want to delete this post?');" method="post">
+                        {% csrf_token %}
+                        <input type="hidden" name="{{ list.id }}" value="{{ list.id }}" >
+                        <button type="submit" class="btn btn-default btn-sm">
+                        <span class="glyphicon glyphicon-trash"></span> Delete
+                        </button>
+                    </form>
+                     <br><br>
+                 </div>
+              </div>
+        </div>
+
+     </div>
+
+    {% endfor %}
+    {% endif %}
+
+<div class="row">
+    <div class="col-md-8 col-md-offset-2">
+            {% if data.has_other_pages %}
+          <ul class="pagination">
+            {% if data.has_previous %}
+              <li><a href="?page={{ data.previous_page_number }}">&laquo;</a></li>
+            {% else %}
+              <li class="disabled"><span>&laquo;</span></li>
+            {% endif %}
+            {% for i in data.paginator.page_range %}
+              {% if data.number == i %}
+                <li class="active"><span>{{ i }} <span class="sr-only">(current)</span></span></li>
+              {% else %}
+                <li><a href="?page={{ i }}">{{ i }}</a></li>
+              {% endif %}
+            {% endfor %}
+            {% if data.has_next %}
+              <li><a href="?page={{ data.next_page_number }}">&raquo;</a></li>
+            {% else %}
+              <li class="disabled"><span>&raquo;</span></li>
+            {% endif %}
+          </ul>
+        {% endif %}
+     </div>
+</div>
+
+{% endblock %}

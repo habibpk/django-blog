@@ -1,0 +1,32 @@
+{% extends 'blog/base.html' %}
+{% block content %}
+    <div class="row">
+        <div class="col-md-8 col-md-offset-2">
+            <h2>All posts of: <span style="color:orange;">{{ post_cat }}</span></h2>
+        </div>
+    </div>
+
+    {% for post in article_list %}
+    <div class="row pane">
+        <div class="col-md-8 col-md-offset-2">
+            <div class="panel-group">
+                 <div class="panel panel-primary">
+                     <div class="panel-heading">{{ post.title }}</div>
+                     <div class="panel-body">{{ post.disc|slice:":200"  }}</div>
+                 </div>
+            </div>
+
+
+        </div>
+    </div>
+    {% empty %}
+        <div class="row">
+            <div class="col-md-8 col-md-offset-2">
+                <h2>No Article Found in "{{ post_cat }}"</h2>
+            </div>
+        </div>
+
+    {% endfor %}
+
+
+{% endblock %}

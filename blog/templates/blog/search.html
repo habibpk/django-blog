@@ -1,0 +1,27 @@
+{% extends 'blog/base.html' %}
+{% block content %}
+{% if query %}
+    <div class="row">
+        <div class="col-md-8 col-md-offset-2">
+            <h2>{{ Title }}</h2><br>
+        </div>
+    </div>
+    {% for search in all_data %}
+
+        <div class="row pane">
+
+        <div class="col-md-8 col-md-offset-2">
+             <div class="panel-group">
+                 <div class="panel panel-primary">
+                      <div class="panel-heading">{{ search.title }}</div>
+                      <div class="panel-body">{{ search.disc|slice:":200" }}</div>
+                      &nbsp;<a href="{% url 'blog:detail' search.id %}" class="btn btn-primary">Detail</a><br><br>
+                 </div>
+              </div>
+        </div>
+     </div>
+    {% endfor %}
+    {% endif %}
+
+
+{% endblock %}

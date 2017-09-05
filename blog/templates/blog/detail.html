@@ -1,0 +1,53 @@
+{% extends 'blog/base.html' %}
+{% block content %}
+    <div class="row">
+        <div class="col-md-8 col-md-offset-2">
+        {% if messages %}
+<ul class="messages">
+    {% for message in messages %}
+    <li{% if message.tags %} class="{{ message.tags }}"{% endif %}>{{ message }}</li>
+    {% endfor %}
+</ul>
+{% endif %}
+            <div class="alert alert-info">
+                <h3>{{ article.title }}</h3>
+                <strong>Posted on: </strong>{{ article.posted }} &nbsp; | &nbsp; <strong>Category: </strong>{{ article.cat }}<br><br>
+                 {% if article.img %}
+                     <img src="{{ article.img.url }}" alt="" class="img-responsive">
+                     {% endif %}
+                <p style="font-size: 15px;">{{ article.disc }}</p>
+{#                <p><b>Tags:</b> {{ article.tags.all|join:", " }}</p>#}
+                 <p><b>Tags:</b>
+                     {% for tag in article.tags.all %}
+                         <span class="label label-default">{{ tag }}</span>
+                    {% endfor %}<br>
+            </div>
+        </div>
+    </div>
+     <div class="row">
+        <div class="col-md-8 col-md-offset-2">
+            <h2>Total Numbers of comments: {{ article.comment_set.all.count }}</h2>
+            <a href="{% url 'blog:add_comment' pk=article.pk %}">Leave A Comment</a><br><br>
+        </div>
+     </div>
+    {% for n in article.comment_set.all|dictsort:"text" %}
+    <div class="row">
+        <div class="col-md-8 col-md-offset-2">
+
+            <blockquote>
+                    {{ n.text }}<br><br>
+                <b>Dated:</b> {{ n.dated }} <br>
+
+
+            </blockquote>
+        </div>
+    </div>
+    {% empty %}
+        <div class="row">
+         <div class="col-md-8 col-md-offset-2">
+        There is no comments
+         </div>
+        </div>
+    {% endfor %}
+
+{% endblock %}

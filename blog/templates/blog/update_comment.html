@@ -1,0 +1,28 @@
+{% extends 'blog/base.html' %}
+{% load crispy_forms_tags %}
+{% block content %}
+<div class="row">
+    <div class="col-md-8 col-md-offset-2">
+                {% if messages %}
+
+    {% for message in messages %}
+    <div {% if message.tags == "success" %} class="alert alert-success"{% endif %}>
+
+        <strong>Success! </strong>{{ message }}</div>
+    {% endfor %}
+
+         {% endif %}
+            <form action="" method="post">
+        {% csrf_token %}
+{{ form|crispy }}
+<button type="submit" class="btn btn-success">Update</button>
+</form>
+    </div>
+</div>
+
+
+
+
+
+
+{% endblock %}
