@@ -13,7 +13,7 @@ from django.contrib import messages
 def index(request):
     queryset = article.objects.filter().order_by('-pk')
     paginator = Paginator(queryset, 4)  # Show 25 contacts per page
-    Title = "Latest Post"
+    Title = "Latest Posts"
     page = request.GET.get('page')
     try:
         data = paginator.page(page)
